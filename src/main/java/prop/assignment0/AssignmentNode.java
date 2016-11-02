@@ -1,7 +1,5 @@
 package prop.assignment0;
 
-import prop.assignment0.INode;
-
 public class AssignmentNode implements INode {
 
     @Override
