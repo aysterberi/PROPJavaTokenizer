@@ -20,9 +20,7 @@ public class Tokenizer implements ITokenizer {
 
         while ((line = bufferedReader.readLine()) != null)
             stringBuilder.append(line);
-
-        String noWhitespace = stringBuilder.toString().replaceAll("\\s", "");
-        tokenize(noWhitespace.toCharArray());
+        tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
     }
 
     @Override
