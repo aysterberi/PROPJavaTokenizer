@@ -1,12 +1,28 @@
 package prop.assignment0;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Tokenizer implements ITokenizer {
 
+    private BufferedReader bufferedReader;
+
+    public Tokenizer(String fileName) throws IOException, TokenizerException{
+        this.open(fileName);
+    }
+
     @Override
     public void open(String fileName) throws IOException, TokenizerException {
+        bufferedReader = new BufferedReader(new FileReader(fileName));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
 
+        while ((line = bufferedReader.readLine()) != null)
+            stringBuilder.append(line);
+
+        String noWhitespace = stringBuilder.toString().replaceAll("\\s", "");
+        tokenize(noWhitespace.toCharArray());
     }
 
     @Override
@@ -21,6 +37,10 @@ public class Tokenizer implements ITokenizer {
 
     @Override
     public void close() throws IOException {
+
+    }
+
+    private void tokenize(char[] chars) {
 
     }
 }
