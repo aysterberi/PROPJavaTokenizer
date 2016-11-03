@@ -4,9 +4,11 @@ import java.io.IOException;
 
 public class Parser implements IParser {
 
+    private Tokenizer tokenizer;
+
     @Override
     public void open(String fileName) throws IOException, TokenizerException {
-
+        tokenizer = new Tokenizer(fileName);
     }
 
     @Override
