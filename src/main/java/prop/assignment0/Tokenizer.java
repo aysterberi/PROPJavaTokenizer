@@ -23,9 +23,9 @@ public class Tokenizer implements ITokenizer {
 
 		StringBuilder stringBuilder = new StringBuilder();
 		String line;
-		while ((line = bufferedReader.readLine()) != null)
-			stringBuilder.append(line);
-		tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
+//		while ((line = bufferedReader.readLine()) != null)
+//			stringBuilder.append(line);
+//		tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
 	}
 
 	@Override
@@ -60,6 +60,11 @@ public class Tokenizer implements ITokenizer {
 	}
 
 	private void tokenize(char[] chars) {
+		/*
+		We need to add support for arbitrary
+		length variable names.
+		Perhaps regex?
+		 */
 		Token current;
 		switch (chars[0]) {
 			case '{':
