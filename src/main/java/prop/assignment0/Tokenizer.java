@@ -57,6 +57,24 @@ public class Tokenizer implements ITokenizer {
 	}
 
 	private void tokenize(char[] chars) {
+		Token current;
+		switch (chars[0]) {
+			case '{':
+				current  = Token.LEFT_CURLY;
+				break;
+			case '}':
+				current = Token.RIGHT_CURLY;
+				break;
+			case '(':
+				current = Token.LEFT_PAREN;
+				break;
+			case ')':
+				current = Token.RIGHT_PAREN;
+				break;
+			default:
+				current = Token.NULL;
 
+		}
+		Lexeme lex = new Lexeme(chars[0], current);
 	}
 }
