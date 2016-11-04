@@ -1,44 +1,62 @@
 package prop.assignment0;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Tokenizer implements ITokenizer {
 
-    private BufferedReader bufferedReader;
+	private Scanner scanner;
+	private BufferedReader bufferedReader;
+	private LinkedList<Token> seenTokens;
 
-    public Tokenizer(String fileName) throws IOException, TokenizerException{
-        this.open(fileName);
-    }
+	public Tokenizer(String fileName) throws IOException, TokenizerException {
+		seenTokens = new LinkedList<>();
+		this.open(fileName);
+	}
 
-    @Override
-    public void open(String fileName) throws IOException, TokenizerException {
-        bufferedReader = new BufferedReader(new FileReader(fileName));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
+	@Override
+	public void open(String fileName) throws IOException, TokenizerException {
+		scanner = new Scanner();
+		scanner.open(fileName);
 
-        while ((line = bufferedReader.readLine()) != null)
-            stringBuilder.append(line);
-        tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
-    }
+		StringBuilder stringBuilder = new StringBuilder();
+		String line;
+		while ((line = bufferedReader.readLine()) != null)
+			stringBuilder.append(line);
+		tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
+	}
 
-    @Override
-    public Lexeme current() {
-        return null;
-    }
+	@Override
+	public Lexeme current() {
+		return null;
+	}
 
-    @Override
-    public void moveNext() throws IOException, TokenizerException {
+	@Override
+	public void moveNext() throws IOException, TokenizerException {
+		boolean tokenFound = false;
+		char[] chars = new char[126]; //limit identifier names to max 126 chars
+		int i = 0;
+		while ((chars[i] = scanner.current()) != Scanner.EOF) {
+			while (!tokenFound) {
+				chars[i] = scanner.current(); //fetch next char
+				if (chars[i] == ' ') { //have we hit whitespace or EOF?
+					tokenFound = true; //we've finished collecting a token
+				}
+				scanner.moveNext(); //get next char
+				i++; //increase array item ptr
+			}
+			tokenize(chars);
+		}
 
-    }
+	}
 
-    @Override
-    public void close() throws IOException {
+	@Override
+	public void close() throws IOException {
 
-    }
+	}
 
-    private void tokenize(char[] chars) {
+	private void tokenize(char[] chars) {
 
-    }
+	}
 }
