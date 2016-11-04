@@ -9,6 +9,7 @@ public class Tokenizer implements ITokenizer {
 	private Scanner scanner;
 	private BufferedReader bufferedReader;
 	private LinkedList<Token> seenTokens;
+	private Lexeme currentLexeme;
 
 	public Tokenizer(String fileName) throws IOException, TokenizerException {
 		seenTokens = new LinkedList<>();
@@ -29,7 +30,9 @@ public class Tokenizer implements ITokenizer {
 
 	@Override
 	public Lexeme current() {
-		return null;
+
+		return currentLexeme;
+
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class Tokenizer implements ITokenizer {
 		Token current;
 		switch (chars[0]) {
 			case '{':
-				current  = Token.LEFT_CURLY;
+				current = Token.LEFT_CURLY;
 				break;
 			case '}':
 				current = Token.RIGHT_CURLY;
@@ -76,5 +79,6 @@ public class Tokenizer implements ITokenizer {
 
 		}
 		Lexeme lex = new Lexeme(chars[0], current);
+		currentLexeme = lex;
 	}
 }
