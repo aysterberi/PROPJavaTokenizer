@@ -93,7 +93,9 @@ public class Parser implements IParser {
 		}
 		eNode.value = current;
 		tokenizer.moveNext();  //always take a step before calling submethod
-		eNode.right = constructExpression();
+        if (tokenizer.current().token() != Token.INT_LIT || tokenizer.current().token() != Token.IDENT) {
+            eNode.right = constructExpression();
+        }
 		return eNode;
 	}
 
