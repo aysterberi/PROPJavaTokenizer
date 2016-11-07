@@ -62,6 +62,7 @@ public class Parser implements IParser {
 			throw new ParserException("Missing or incorrect assignment operator.");
 		}
 		aNode.value = tokenizer.current().token();
+		tokenizer.moveNext(); //always take a step before calling submethod
 		aNode.right = constructExpression();
 
 		return aNode;
@@ -75,7 +76,7 @@ public class Parser implements IParser {
 			throw new ParserException("Missing or incorrect operator for expression.");
 		}
 		eNode.value = current;
-		tokenizer.moveNext();
+		tokenizer.moveNext();  //always take a step before calling submethod
 		eNode.right = constructExpression();
 		return eNode;
 	}
@@ -89,7 +90,7 @@ public class Parser implements IParser {
 		} else {
 			tNode.value = tokenizer.current().token();
 		}
-		tokenizer.moveNext();
+		tokenizer.moveNext();  //always take a step before calling submethod
 		tNode.right = constructTerm();
 		return tNode;
 
@@ -102,6 +103,6 @@ public class Parser implements IParser {
 			fNode.leaf = lex;
 		}
 		//TODO: handle Expression as Factor
-		return null;
+		return fNode;
 	}
 }
