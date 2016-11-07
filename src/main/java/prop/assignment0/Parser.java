@@ -92,6 +92,7 @@ public class Parser implements IParser {
 			throw new ParserException("Missing or incorrect operator for expression.");
 		}
 		eNode.value = current;
+		last = tokenizer.current();
 		tokenizer.moveNext();  //always take a step before calling submethod
         if (tokenizer.current().token() != Token.INT_LIT || tokenizer.current().token() != Token.IDENT) {
             eNode.right = constructExpression();
@@ -101,29 +102,39 @@ public class Parser implements IParser {
 
 	private INode constructTerm() throws IOException, TokenizerException, ParserException {
 		TermNode tNode = new TermNode();
-		tNode.left = constructFactor(); //parse left
+		tNode.left = constructFactor(); //parse right
 		tokenizer.moveNext(); //parse op
+		if (last != null) {
+			if (last.token() == Token.MULT_OP || last.token() == Token.DIV_OP) {
+				return tNode;
+			}
+		}
 		if (tokenizer.current().token() != Token.MULT_OP && tokenizer.current().token() != Token.DIV_OP) {
 			throw new ParserException("Missing or incorrect operator for term .");
-		} else {
-			tNode.value = tokenizer.current().token();
 		}
+		tNode.value = tokenizer.current().token();
+		last = tokenizer.current();
 		tokenizer.moveNext();  //always take a step before calling submethod
-		if (tokenizer.current().token() != Token.INT_LIT || tokenizer.current().token() != Token.IDENT) {
-			tNode.right = constructTerm();
-		}
-		tNode.right = null;
+		tNode.right = constructTerm();
 		return tNode;
 
 	}
 
-	private INode constructFactor() {
+	private INode constructFactor() throws IOException, ParserException, TokenizerException {
 		FactorNode fNode = new FactorNode();
 		Lexeme lex = tokenizer.current();
 		if (lex.token() == Token.INT_LIT || lex.token() == Token.IDENT) {
-			fNode.leaf = lex;
+			fNode.value = lex; //store our lexeme
 		}
-		//TODO: handle Expression as Factor
+		if (lex.token() != Token.IDENT
+				&& lex.token() != Token.INT_LIT && lex.token() == Token.LEFT_PAREN) {
+			fNode.right = constructExpression();
+		}
+		if (lex.token() != Token.IDENT &&
+				lex.token() != Token.INT_LIT
+				&& lex.token() != Token.LEFT_CURLY) {
+			throw new ParserException("Invalid factor");
+		}
 		return fNode;
 	}
 }
