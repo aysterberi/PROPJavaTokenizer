@@ -108,6 +108,7 @@ public class Tokenizer implements ITokenizer {
             chars[i] = ch;
             scanner.moveNext();
             ch = scanner.current();
+	        i++;
         }
         int val = Integer.parseInt(new String(chars).trim());
         this.current = new Lexeme(val, Token.INT_LIT);
