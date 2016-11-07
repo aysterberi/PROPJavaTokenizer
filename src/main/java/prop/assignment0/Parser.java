@@ -78,25 +78,29 @@ public class Parser implements IParser {
 		tokenizer.moveNext(); //always take a step before calling submethod
 		aNode.right = constructExpression();
 		tokenizer.moveNext(); //we have to check if we have a ;
-		if (tokenizer.current().token() != Token.SEMICOLON) {
-			throw new ParserException("Missing semicolon on assignment. Make sure you haven't missed a ;");
-		}
+//		if (tokenizer.current().token() != Token.SEMICOLON) {
+//			throw new ParserException("Missing semicolon on assignment. Make sure you haven't missed a ;");
+//		}
 		return aNode;
 	}
 
 	private INode constructExpression() throws TokenizerException, ParserException, IOException {
+		System.out.println("Building an expression!");
 		ExpressionNode eNode = new ExpressionNode();
-		eNode.left = constructTerm(); //parse the left
-		tokenizer.moveNext(); //parse OP
+		eNode.left = constructTerm(); //parse the left [should be an ID]
+		tokenizer.moveNext(); //parse OP [let's get our operator
 		Lexeme lex = tokenizer.current();
-		if(lex.token() == Token.ADD_OP || lex.token() == Token.SUB_OP)
+		if(lex.token() == Token.ADD_OP || lex.token() == Token.SUB_OP) //is it a valid expression?
 		{
 			//we have an operator!
 			eNode.value = lex.token();
 			tokenizer.moveNext();  //fetch next
 			eNode.right = constructExpression();
+			tokenizer.moveNext();
 			return eNode;
 		}
+		//we only have a term in our expr, return;
+		tokenizer.moveNext();
 		return eNode;
 	}
 
@@ -112,8 +116,10 @@ public class Parser implements IParser {
 			tNode.value = lex.token();
 			tokenizer.moveNext(); //take a step
 			tNode.right = constructTerm();
+			tokenizer.moveNext();
 			return tNode;
 		}
+		tokenizer.moveNext();
 		return tNode;
 
 	}
@@ -126,9 +132,11 @@ public class Parser implements IParser {
 		}
 		if (lex.token() != Token.IDENT
 				&& lex.token() != Token.INT_LIT && lex.token() == Token.LEFT_PAREN) {
-			last = lex;
 			tokenizer.moveNext();
 			fNode.right = constructExpression();
+			tokenizer.moveNext(); //consume
+			if(tokenizer.current().token() == Token.RIGHT_PAREN)
+				return fNode;
 		}
 		if (lex.token() != Token.IDENT &&
 				lex.token() != Token.INT_LIT
