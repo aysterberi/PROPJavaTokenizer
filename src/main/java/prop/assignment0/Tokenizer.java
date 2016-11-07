@@ -27,6 +27,7 @@ public class Tokenizer implements ITokenizer {
         consumeWhitespace();
         char c = scanner.current();
         lookupTable(c);
+        scanner.moveNext();
     }
 
     @Override
@@ -92,8 +93,9 @@ public class Tokenizer implements ITokenizer {
         while (Character.isLowerCase(ch) && i < MAX_IDENTIFIER_SIZE) {
             chars[i] = ch;
             scanner.moveNext();
+            ch = scanner.current();
         }
-        String val = new String(chars);
+        String val = new String(chars).trim();
         this.current = new Lexeme(val, Token.IDENT);
     }
 
@@ -104,8 +106,9 @@ public class Tokenizer implements ITokenizer {
         while (Character.isDigit(ch) && i < Integer.MAX_VALUE) {
             chars[i] = ch;
             scanner.moveNext();
+            ch = scanner.current();
         }
-        int val = Integer.parseInt(new String(chars));
+        int val = Integer.parseInt(new String(chars).trim());
         this.current = new Lexeme(val, Token.INT_LIT);
     }
 }
