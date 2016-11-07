@@ -1,36 +1,33 @@
 package prop.assignment0;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 public class Tokenizer implements ITokenizer {
 
-    private BufferedReader bufferedReader;
+    private Scanner scanner;
+    private Lexeme current;
 
-    public Tokenizer(String fileName) throws IOException, TokenizerException{
-        this.open(fileName);
+    public Tokenizer() throws IOException, TokenizerException {
     }
 
     @Override
     public void open(String fileName) throws IOException, TokenizerException {
-        bufferedReader = new BufferedReader(new FileReader(fileName));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-
-        while ((line = bufferedReader.readLine()) != null)
-            stringBuilder.append(line);
-        tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
+        scanner = new Scanner();
+        scanner.open(fileName);
+        scanner.moveNext();
     }
 
     @Override
     public Lexeme current() {
-        return null;
+        return current;
     }
 
     @Override
     public void moveNext() throws IOException, TokenizerException {
-
+        removeWhitespace();
+        char c = scanner.current();
+        // if c == a || t
+        // current.produceDeterminer();
     }
 
     @Override
@@ -38,7 +35,9 @@ public class Tokenizer implements ITokenizer {
 
     }
 
-    private void tokenize(char[] chars) {
-
+    private void removeWhitespace() throws IOException {
+        while (scanner.current() == Character.DIRECTIONALITY_WHITESPACE) {
+            scanner.moveNext();
+        }
     }
 }
