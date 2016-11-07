@@ -22,7 +22,7 @@ public class Parser implements IParser {
 
 	@Override
 	public INode parse() throws IOException, TokenizerException, ParserException {
-		return null;
+		return constructBlock();
 	}
 
 	@Override
@@ -32,16 +32,24 @@ public class Parser implements IParser {
 
 	//all the methods for building statements
 	private INode constructBlock() throws ParserException, IOException, TokenizerException {
-		List<INode> nodeList = new LinkedList<>();
-		if (tokenizer.current().token() == (Token.LEFT_CURLY)) {
-			while (tokenizer.current().token() != Token.RIGHT_CURLY) {
-				tokenizer.moveNext(); //consume our left curly
-				constructStatement();
-			}
-		} else {
-			throw new ParserException("No left curly brace!");
+		BlockNode bNode = new BlockNode();
+		if(tokenizer.current().token() != Token.LEFT_CURLY)
+		{
+			//invalid start of a block
+			throw new ParserException("Invalid block initialisation. Are you missing a '{' ?");
 		}
-		return null;
+
+		tokenizer.moveNext(); //fetch next token
+		bNode.right = constructStatement(); //point right
+		tokenizer.moveNext(); //fetch next, which ought to be a right curly brace
+		if(tokenizer.current().token() != Token.RIGHT_CURLY)
+		{
+			//invalid closing of a block
+			throw new ParserException("Invalid block closure. Are you missing a '}' ?");
+		}
+		bNode.left = tokenizer.current();
+
+		return bNode;
 	}
 
 	private INode constructStatement() throws IOException, ParserException, TokenizerException {
