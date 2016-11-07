@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class Tokenizer implements ITokenizer {
 
+	public static final int MAX_IDENTIFIER_SIZE = 126;
 	private Scanner scanner;
 	private BufferedReader bufferedReader;
 	private LinkedList<Token> seenTokens;
@@ -20,12 +21,7 @@ public class Tokenizer implements ITokenizer {
 	public void open(String fileName) throws IOException, TokenizerException {
 		scanner = new Scanner();
 		scanner.open(fileName);
-
-		StringBuilder stringBuilder = new StringBuilder();
-		String line;
-//		while ((line = bufferedReader.readLine()) != null)
-//			stringBuilder.append(line);
-//		tokenize(stringBuilder.toString().replaceAll("\\s", "").toCharArray());
+		scanner.moveNext();
 	}
 
 	@Override
@@ -37,6 +33,8 @@ public class Tokenizer implements ITokenizer {
 
 	@Override
 	public void moveNext() throws IOException, TokenizerException {
+		consumeWhitespace();
+		char c = scanner.current();
 		boolean tokenFound = false;
 		char[] chars = new char[126]; //limit identifier names to max 126 chars
 		int i = 0;
@@ -59,6 +57,12 @@ public class Tokenizer implements ITokenizer {
 
 	}
 
+	private void consumeWhitespace() throws IOException {
+		while ((Character.isWhitespace(scanner.current()))) {
+			scanner.moveNext();
+		}
+	}
+
 	private void tokenize(char[] chars) {
 		/*
 		We need to add support for arbitrary
@@ -79,11 +83,47 @@ public class Tokenizer implements ITokenizer {
 			case ')':
 				current = Token.RIGHT_PAREN;
 				break;
+			case ';':
+				current = Token.SEMICOLON;
+				break;
+			case '+':
+				current = Token.ADD_OP;
+				break;
+			case '-':
+				current = Token.SUB_OP;
+				break;
+			case '/':
+				current = Token.DIV_OP;
+				break;
+			case '=':
+				current = Token.ASSIGN_OP;
+				break;
+			case '*':
+				current = Token.MULT_OP;
+				break;
 			default:
-				current = Token.NULL;
+				if (Character.isDigit((chars[0]))) {
+					current = Token.INT_LIT;
+
+					if (Character.isLowerCase(chars[0])) {
+						current = Token.IDENT;
+					}
+				}
 
 		}
-		Lexeme lex = new Lexeme(chars[0], current);
-		currentLexeme = lex;
+		//Lexeme lex = new Lexeme(chars[0], current);
+	//	currentLexeme = lex;
+	}
+
+	private void constructIDENT() throws IOException {
+		char current = scanner.current();
+		int i = 0;
+		char[] chars = new char[MAX_IDENTIFIER_SIZE];
+		while (Character.isLowerCase(current) && i < MAX_IDENTIFIER_SIZE) {
+			chars[i] = current;
+			scanner.moveNext();
+		}
+		String val = new String(chars);
+		currentLexeme = new Lexeme(val, Token.IDENT);
 	}
 }
