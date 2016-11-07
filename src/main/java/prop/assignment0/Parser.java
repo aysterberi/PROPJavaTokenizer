@@ -31,7 +31,7 @@ public class Parser implements IParser {
 	}
 
 	//all the methods for building statements
-	private void constructBlock() throws ParserException, IOException, TokenizerException {
+	private INode constructBlock() throws ParserException, IOException, TokenizerException {
 		List<INode> nodeList = new LinkedList<>();
 		if (tokenizer.current().token() == (Token.LEFT_CURLY)) {
 			while (tokenizer.current().token() != Token.RIGHT_CURLY) {
@@ -41,24 +41,36 @@ public class Parser implements IParser {
 		} else {
 			throw new ParserException("No left curly brace!");
 		}
+		return null;
 	}
 
-	private void constructStatement() {
-		if (tokenizer.current().token() != Token.IDENT) {
-
+	private INode constructStatement() {
+		while(tokenizer.current().token() != Token.SEMICOLON)
+		{
+			constructAssignment();
 		}
-	}
-	private void constructAssignment() {
-
-	}
-	private void constructExpression() {
-
-	}
-	private void constructTerm() {
-
+		return null;
 	}
 
-	private void constructFactor() {
+	private INode constructAssignment() {
 
+		return null;
+	}
+
+	private INode constructExpression() {
+		constructTerm();
+		constructExpression();
+		return null;
+	}
+
+	private INode constructTerm() {
+		constructFactor();
+		return null;
+
+	}
+
+	private INode constructFactor() {
+		constructExpression();
+		return null;
 	}
 }
