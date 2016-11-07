@@ -3,11 +3,11 @@ package prop.assignment0;
 import java.io.IOException;
 
 public class Tokenizer implements ITokenizer {
-	public static final int MAX_IDENTIFIER_SIZE = 126;
+    public static final int MAX_IDENTIFIER_SIZE = 126;
     private Scanner scanner;
     private Lexeme current;
 
-    public Tokenizer()  {
+    public Tokenizer() {
     }
 
     @Override
@@ -24,28 +24,23 @@ public class Tokenizer implements ITokenizer {
 
     @Override
     public void moveNext() throws IOException, TokenizerException {
-        removeWhitespace();
+        consumeWhitespace();
         char c = scanner.current();
-	lookupTable(c);
-        // if c == a || t
-        // current.produceDeterminer();
+        lookupTable(c);
     }
 
+    @Override
+    public void close() throws IOException {
+        scanner.close();
+    }
 
-	}
+    private void consumeWhitespace() throws IOException {
+        while ((Character.isWhitespace(scanner.current()))) {
+            scanner.moveNext();
+        }
+    }
 
-	@Override
-	public void close() throws IOException {
-		scanner.close();
-	}
-
-	private void consumeWhitespace() throws IOException {
-		while ((Character.isWhitespace(scanner.current()))) {
-			scanner.moveNext();
-		}
-	}
-
-private void lookupTable(char ch) throws IOException {
+    private void lookupTable(char ch) throws IOException {
         switch (ch) {
             case '{':
                 current = new Lexeme('{', Token.LEFT_CURLY);
@@ -68,8 +63,8 @@ private void lookupTable(char ch) throws IOException {
             case '-':
                 current = new Lexeme('-', Token.SUB_OP);
                 break;
-            case '':
-                current = new Lexeme('', Token.MULT_OP);
+            case '*':
+                current = new Lexeme('*', Token.MULT_OP);
                 break;
             case '/':
                 current = new Lexeme('/', Token.DIV_OP);
@@ -83,33 +78,34 @@ private void lookupTable(char ch) throws IOException {
         }
     }
 
-private void controlTokenEnum(char ch) {
-        if(Character.isDigit(ch))
+    private void controlTokenEnum(char ch) throws IOException {
+        if (Character.isDigit(ch))
             constructIntegerLiteral();
         else
             constructIdentifier();
     }
-	private void constructIDENT() throws IOException {
-		char ch = scanner.current();
-		int i = 0;
-		char[] chars = new char[MAX_IDENTIFIER_SIZE];
-		while (Character.isLowerCase(ch) && i < MAX_IDENTIFIER_SIZE) {
-			chars[i] = ch;
-			scanner.moveNext();
-		}
-		String val = new String(chars);
-		currentLexeme = new Lexeme(val, Token.IDENT);
-	}
 
-	private void constructINT_LIT() throws IOException {
-		char ch = scanner.current();
-		int i = 0;
-		char[] chars = new char[Integer.MAX_VALUE];
-		while (Character.isDigit(ch) && i < Integer.MAX_VALUE) {
-			chars[i] = ch;
-			scanner.moveNext();
-		}
-		int val = Integer.parseInt(new String(chars));
-		currentLexeme = new Lexeme(val, Token.INT_LIT);
-	}
+    private void constructIdentifier() throws IOException {
+        char ch = scanner.current();
+        int i = 0;
+        char[] chars = new char[MAX_IDENTIFIER_SIZE];
+        while (Character.isLowerCase(ch) && i < MAX_IDENTIFIER_SIZE) {
+            chars[i] = ch;
+            scanner.moveNext();
+        }
+        String val = new String(chars);
+        this.current = new Lexeme(val, Token.IDENT);
+    }
+
+    private void constructIntegerLiteral() throws IOException {
+        char ch = scanner.current();
+        int i = 0;
+        char[] chars = new char[Integer.MAX_VALUE];
+        while (Character.isDigit(ch) && i < Integer.MAX_VALUE) {
+            chars[i] = ch;
+            scanner.moveNext();
+        }
+        int val = Integer.parseInt(new String(chars));
+        this.current = new Lexeme(val, Token.INT_LIT);
+    }
 }
