@@ -126,4 +126,16 @@ public class Tokenizer implements ITokenizer {
 		String val = new String(chars);
 		currentLexeme = new Lexeme(val, Token.IDENT);
 	}
+
+	private void constructINT_LIT() throws IOException {
+		char current = scanner.current();
+		int i = 0;
+		char[] chars = new char[Integer.MAX_VALUE];
+		while (Character.isDigit(current) && i < Integer.MAX_VALUE) {
+			chars[i] = current;
+			scanner.moveNext();
+		}
+		int val = Integer.parseInt(new String(chars));
+		currentLexeme = new Lexeme(val, Token.INT_LIT);
+	}
 }
