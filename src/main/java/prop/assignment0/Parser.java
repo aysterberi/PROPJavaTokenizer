@@ -86,23 +86,23 @@ public class Parser implements IParser {
 
 	private INode constructExpression() throws TokenizerException, ParserException, IOException {
 		ExpressionNode eNode = new ExpressionNode();
-		eNode.left = constructTerm();
-		Token current = tokenizer.current().token();
-		if (current != Token.ADD_OP && current != Token.SUB_OP) {
-			throw new ParserException("Missing or incorrect operator for expression.");
+		eNode.left = constructTerm(); //parse the left
+		tokenizer.moveNext(); //parse OP
+		Lexeme lex = tokenizer.current();
+		if(lex.token() == Token.ADD_OP || lex.token() == Token.SUB_OP)
+		{
+			//we have an operator!
+			eNode.value = lex.token();
+			tokenizer.moveNext();  //fetch next
+			eNode.right = constructExpression();
+			return eNode;
 		}
-		eNode.value = current;
-		last = tokenizer.current();
-		tokenizer.moveNext();  //always take a step before calling submethod
-        if (tokenizer.current().token() != Token.INT_LIT || tokenizer.current().token() != Token.IDENT) {
-            eNode.right = constructExpression();
-        }
 		return eNode;
 	}
 
 	private INode constructTerm() throws IOException, TokenizerException, ParserException {
 		TermNode tNode = new TermNode();
-		tNode.left = constructFactor(); //parse right
+		tNode.left = constructFactor(); //parse the left
 		tokenizer.moveNext(); //parse op
 		Lexeme lex = tokenizer.current(); //fetch next
 		//if it's a operator, we should expect a term after
