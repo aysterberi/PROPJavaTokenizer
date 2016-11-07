@@ -1,8 +1,6 @@
 package prop.assignment0;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class Parser implements IParser {
@@ -18,6 +16,7 @@ public class Parser implements IParser {
 	public void open(String fileName) throws IOException, TokenizerException {
 		tokenizer = new Tokenizer();
 		tokenizer.open(fileName);
+		tokenizer.moveNext(); //initialise our tokenizer
 	}
 
 	@Override
@@ -33,8 +32,7 @@ public class Parser implements IParser {
 	//all the methods for building statements
 	private INode constructBlock() throws ParserException, IOException, TokenizerException {
 		BlockNode bNode = new BlockNode();
-		if(tokenizer.current().token() != Token.LEFT_CURLY)
-		{
+		if (tokenizer.current().token() != Token.LEFT_CURLY) {
 			//invalid start of a block
 			throw new ParserException("Invalid block initialisation. Are you missing a '{' ?");
 		}
@@ -42,8 +40,7 @@ public class Parser implements IParser {
 		tokenizer.moveNext(); //fetch next token
 		bNode.right = constructStatement(); //point right
 		tokenizer.moveNext(); //fetch next, which ought to be a right curly brace
-		if(tokenizer.current().token() != Token.RIGHT_CURLY)
-		{
+		if (tokenizer.current().token() != Token.RIGHT_CURLY) {
 			//invalid closing of a block
 			throw new ParserException("Invalid block closure. Are you missing a '}' ?");
 		}
@@ -53,10 +50,18 @@ public class Parser implements IParser {
 	}
 
 	private INode constructStatement() throws IOException, ParserException, TokenizerException {
-		while (tokenizer.current().token() != Token.SEMICOLON) {
-			constructAssignment();
+		StatementsNode sNode = new StatementsNode();
+		if (tokenizer.current().token() != Token.IDENT || tokenizer.current().token() != Token.IDENT) {
+			throw new ParserException("Invalid statement syntax.");
 		}
-		return null;
+		sNode.left = constructAssignment();
+		tokenizer.moveNext();
+		if (tokenizer.current().token() == Token.EOF) {
+			sNode.right = null;
+			return sNode;
+		}
+		sNode.right = constructStatement();
+		return sNode;
 	}
 
 	private INode constructAssignment() throws ParserException, TokenizerException, IOException {
@@ -72,7 +77,10 @@ public class Parser implements IParser {
 		aNode.value = tokenizer.current().token();
 		tokenizer.moveNext(); //always take a step before calling submethod
 		aNode.right = constructExpression();
-
+		tokenizer.moveNext(); //we have to check if we have a ;
+		if (tokenizer.current().token() != Token.SEMICOLON) {
+			throw new ParserException("Missing semicolon on assignment. Make sure you haven't missed a ;");
+		}
 		return aNode;
 	}
 
