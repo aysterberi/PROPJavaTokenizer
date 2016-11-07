@@ -1,8 +1,9 @@
 package prop.assignment0;
 
 public class AssignmentNode implements INode {
-    public INode left;
+    public Token left;
     public INode right;
+	public Token value;
     @Override
     public Object evaluate(Object[] args) throws Exception {
         return null;
