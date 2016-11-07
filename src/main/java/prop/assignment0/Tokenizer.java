@@ -26,6 +26,7 @@ public class Tokenizer implements ITokenizer {
     public void moveNext() throws IOException, TokenizerException {
         removeWhitespace();
         char c = scanner.current();
+	lookupTable(c);
         // if c == a || t
         // current.produceDeterminer();
     }
@@ -44,52 +45,50 @@ public class Tokenizer implements ITokenizer {
 		}
 	}
 
-	//	private void tokenize(char ch) {
-//		switch (ch) {
-//			case '{':
-//				current = Token.LEFT_CURLY;
-//				break;
-//			case '}':
-//				current = Token.RIGHT_CURLY;
-//				break;
-//			case '(':
-//				current = Token.LEFT_PAREN;
-//				break;
-//			case ')':
-//				current = Token.RIGHT_PAREN;
-//				break;
-//			case ';':
-//				current = Token.SEMICOLON;
-//				break;
-//			case '+':
-//				current = Token.ADD_OP;
-//				break;
-//			case '-':
-//				current = Token.SUB_OP;
-//				break;
-//			case '/':
-//				current = Token.DIV_OP;
-//				break;
-//			case '=':
-//				current = Token.ASSIGN_OP;
-//				break;
-//			case '*':
-//				current = Token.MULT_OP;
-//				break;
-//			default:
-//				if (Character.isDigit((chars[0]))) {
-//					current = Token.INT_LIT;
-//
-//					if (Character.isLowerCase(chars[0])) {
-//						current = Token.IDENT;
-//					}
-//				}
-//
-//		}
-//		//Lexeme lex = new Lexeme(chars[0], current);
-//		//	currentLexeme = lex;
-//	}
-//
+private void lookupTable(char ch) throws IOException {
+        switch (ch) {
+            case '{':
+                current = new Lexeme('{', Token.LEFT_CURLY);
+                break;
+            case '}':
+                current = new Lexeme('}', Token.RIGHT_CURLY);
+                break;
+            case '(':
+                current = new Lexeme('(', Token.LEFT_PAREN);
+                break;
+            case ')':
+                current = new Lexeme(')', Token.RIGHT_PAREN);
+                break;
+            case ';':
+                current = new Lexeme(';', Token.SEMICOLON);
+                break;
+            case '+':
+                current = new Lexeme('+', Token.ADD_OP);
+                break;
+            case '-':
+                current = new Lexeme('-', Token.SUB_OP);
+                break;
+            case '':
+                current = new Lexeme('', Token.MULT_OP);
+                break;
+            case '/':
+                current = new Lexeme('/', Token.DIV_OP);
+                break;
+            case '=':
+                current = new Lexeme('=', Token.ASSIGN_OP);
+                break;
+            default:
+                controlTokenEnum(ch);
+                break;
+        }
+    }
+
+private void controlTokenEnum(char ch) {
+        if(Character.isDigit(ch))
+            constructIntegerLiteral();
+        else
+            constructIdentifier();
+    }
 	private void constructIDENT() throws IOException {
 		char ch = scanner.current();
 		int i = 0;
