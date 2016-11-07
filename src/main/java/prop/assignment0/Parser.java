@@ -88,7 +88,7 @@ public class Parser implements IParser {
 		ExpressionNode eNode = new ExpressionNode();
 		eNode.left = constructTerm();
 		Token current = tokenizer.current().token();
-		if (current != Token.ADD_OP || current != Token.SUB_OP) {
+		if (current != Token.ADD_OP && current != Token.SUB_OP) {
 			throw new ParserException("Missing or incorrect operator for expression.");
 		}
 		eNode.value = current;
@@ -101,13 +101,16 @@ public class Parser implements IParser {
 		TermNode tNode = new TermNode();
 		tNode.left = constructFactor(); //parse left
 		tokenizer.moveNext(); //parse op
-		if (tokenizer.current().token() != Token.MULT_OP || tokenizer.current().token() != Token.DIV_OP) {
+		if (tokenizer.current().token() != Token.MULT_OP && tokenizer.current().token() != Token.DIV_OP) {
 			throw new ParserException("Missing or incorrect operator for term .");
 		} else {
 			tNode.value = tokenizer.current().token();
 		}
 		tokenizer.moveNext();  //always take a step before calling submethod
-		tNode.right = constructTerm();
+		if (tokenizer.current().token() != Token.INT_LIT || tokenizer.current().token() != Token.IDENT) {
+			tNode.right = constructTerm();
+		}
+		tNode.right = null;
 		return tNode;
 
 	}
