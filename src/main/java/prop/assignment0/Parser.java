@@ -104,18 +104,16 @@ public class Parser implements IParser {
 		TermNode tNode = new TermNode();
 		tNode.left = constructFactor(); //parse right
 		tokenizer.moveNext(); //parse op
-		if (last != null) {
-			if (last.token() == Token.MULT_OP || last.token() == Token.DIV_OP) {
-				return tNode;
-			}
+		Lexeme lex = tokenizer.current(); //fetch next
+		//if it's a operator, we should expect a term after
+		//if it's not an operator, return
+		if(lex.token() == Token.MULT_OP || lex.token() == Token.DIV_OP)
+		{
+			tNode.value = lex.token();
+			tokenizer.moveNext(); //take a step
+			tNode.right = constructTerm();
+			return tNode;
 		}
-		if (tokenizer.current().token() != Token.MULT_OP && tokenizer.current().token() != Token.DIV_OP) {
-			throw new ParserException("Missing or incorrect operator for term .");
-		}
-		tNode.value = tokenizer.current().token();
-		last = tokenizer.current();
-		tokenizer.moveNext();  //always take a step before calling submethod
-		tNode.right = constructTerm();
 		return tNode;
 
 	}
@@ -128,6 +126,8 @@ public class Parser implements IParser {
 		}
 		if (lex.token() != Token.IDENT
 				&& lex.token() != Token.INT_LIT && lex.token() == Token.LEFT_PAREN) {
+			last = lex;
+			tokenizer.moveNext();
 			fNode.right = constructExpression();
 		}
 		if (lex.token() != Token.IDENT &&
