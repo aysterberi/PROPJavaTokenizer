@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public class Tokenizer implements ITokenizer {
     public static final int MAX_IDENTIFIER_SIZE = 126;
+    public static final int MAX_INTEGER_SIZE = 100;
     private Scanner scanner;
     private Lexeme current;
 
@@ -102,8 +103,8 @@ public class Tokenizer implements ITokenizer {
     private void constructIntegerLiteral() throws IOException {
         char ch = scanner.current();
         int i = 0;
-        char[] chars = new char[Integer.MAX_VALUE];
-        while (Character.isDigit(ch) && i < Integer.MAX_VALUE) {
+        char[] chars = new char[MAX_INTEGER_SIZE];
+        while (Character.isDigit(ch) && i < MAX_INTEGER_SIZE) {
             chars[i] = ch;
             scanner.moveNext();
             ch = scanner.current();
