@@ -33,9 +33,9 @@ public class Parser implements IParser {
 	//all the methods for building statements
 	private void constructBlock() throws ParserException, IOException, TokenizerException {
 		List<INode> nodeList = new LinkedList<>();
-		if (tokenizer.current().token().equals(Token.LEFT_CURLY)) {
+		if (tokenizer.current().token() == (Token.LEFT_CURLY)) {
 			while (tokenizer.current().token() != Token.RIGHT_CURLY) {
-				tokenizer.moveNext();
+				tokenizer.moveNext(); //consume our left curly
 				constructStatement();
 			}
 		} else {
@@ -44,5 +44,21 @@ public class Parser implements IParser {
 	}
 
 	private void constructStatement() {
+		if (tokenizer.current().token() != Token.IDENT) {
+
+		}
+	}
+	private void constructAssignment() {
+
+	}
+	private void constructExpression() {
+
+	}
+	private void constructTerm() {
+
+	}
+
+	private void constructFactor() {
+
 	}
 }
