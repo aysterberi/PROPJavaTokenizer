@@ -96,7 +96,7 @@ public class Tokenizer implements ITokenizer {
             scanner.moveNext();
             ch = scanner.current();
         }
-        String val = new String(chars);
+        String val = new String(chars).trim();
         this.current = new Lexeme(val, Token.IDENT);
     }
 
@@ -109,7 +109,7 @@ public class Tokenizer implements ITokenizer {
             scanner.moveNext();
             ch = scanner.current();
         }
-        int val = Integer.parseInt(new String(chars));
+        int val = Integer.parseInt(new String(chars).trim());
         this.current = new Lexeme(val, Token.INT_LIT);
     }
 }
