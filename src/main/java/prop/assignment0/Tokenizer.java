@@ -3,33 +3,33 @@ package prop.assignment0;
 import java.io.IOException;
 
 public class Tokenizer implements ITokenizer {
-
 	public static final int MAX_IDENTIFIER_SIZE = 126;
-	private Scanner scanner;
-	private Lexeme currentLexeme;
+    private Scanner scanner;
+    private Lexeme current;
 
-	public Tokenizer(){
-	}
+    public Tokenizer()  {
+    }
 
-	@Override
-	public void open(String fileName) throws IOException, TokenizerException {
-		scanner = new Scanner();
-		scanner.open(fileName);
-		scanner.moveNext();
-	}
+    @Override
+    public void open(String fileName) throws IOException, TokenizerException {
+        scanner = new Scanner();
+        scanner.open(fileName);
+        scanner.moveNext();
+    }
 
-	@Override
-	public Lexeme current() {
+    @Override
+    public Lexeme current() {
+        return current;
+    }
 
-		return currentLexeme;
+    @Override
+    public void moveNext() throws IOException, TokenizerException {
+        removeWhitespace();
+        char c = scanner.current();
+        // if c == a || t
+        // current.produceDeterminer();
+    }
 
-	}
-
-	@Override
-	public void moveNext() throws IOException, TokenizerException {
-		consumeWhitespace();
-		char c = scanner.current();
-//		tokenize(c);
 
 	}
 
@@ -91,11 +91,11 @@ public class Tokenizer implements ITokenizer {
 //	}
 //
 	private void constructIDENT() throws IOException {
-		char current = scanner.current();
+		char ch = scanner.current();
 		int i = 0;
 		char[] chars = new char[MAX_IDENTIFIER_SIZE];
-		while (Character.isLowerCase(current) && i < MAX_IDENTIFIER_SIZE) {
-			chars[i] = current;
+		while (Character.isLowerCase(ch) && i < MAX_IDENTIFIER_SIZE) {
+			chars[i] = ch;
 			scanner.moveNext();
 		}
 		String val = new String(chars);
@@ -103,11 +103,11 @@ public class Tokenizer implements ITokenizer {
 	}
 
 	private void constructINT_LIT() throws IOException {
-		char current = scanner.current();
+		char ch = scanner.current();
 		int i = 0;
 		char[] chars = new char[Integer.MAX_VALUE];
-		while (Character.isDigit(current) && i < Integer.MAX_VALUE) {
-			chars[i] = current;
+		while (Character.isDigit(ch) && i < Integer.MAX_VALUE) {
+			chars[i] = ch;
 			scanner.moveNext();
 		}
 		int val = Integer.parseInt(new String(chars));
