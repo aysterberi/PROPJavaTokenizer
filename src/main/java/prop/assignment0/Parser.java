@@ -44,33 +44,64 @@ public class Parser implements IParser {
 		return null;
 	}
 
-	private INode constructStatement() {
-		while(tokenizer.current().token() != Token.SEMICOLON)
-		{
+	private INode constructStatement() throws IOException, ParserException, TokenizerException {
+		while (tokenizer.current().token() != Token.SEMICOLON) {
 			constructAssignment();
 		}
 		return null;
 	}
 
-	private INode constructAssignment() {
+	private INode constructAssignment() throws ParserException, TokenizerException, IOException {
+		AssignmentNode aNode = new AssignmentNode();
+		if (tokenizer.current().token() != Token.IDENT) {
+			throw new ParserException("Missing or incorrect first operand for assignment.");
+		}
+		aNode.left = tokenizer.current().token(); //first operand
+		tokenizer.moveNext(); //take a step
+		if (tokenizer.current().token() != Token.ASSIGN_OP) {
+			throw new ParserException("Missing or incorrect assignment operator.");
+		}
+		aNode.value = tokenizer.current().token();
+		aNode.right = constructExpression();
 
-		return null;
+		return aNode;
 	}
 
-	private INode constructExpression() {
-		constructTerm();
-		constructExpression();
-		return null;
+	private INode constructExpression() throws TokenizerException, ParserException, IOException {
+		ExpressionNode eNode = new ExpressionNode();
+		eNode.left = constructTerm();
+		Token current = tokenizer.current().token();
+		if (current != Token.ADD_OP || current != Token.SUB_OP) {
+			throw new ParserException("Missing or incorrect operator for expression.");
+		}
+		eNode.value = current;
+		tokenizer.moveNext();
+		eNode.right = constructExpression();
+		return eNode;
 	}
 
-	private INode constructTerm() {
-		constructFactor();
-		return null;
+	private INode constructTerm() throws IOException, TokenizerException, ParserException {
+		TermNode tNode = new TermNode();
+		tNode.left = constructFactor(); //parse left
+		tokenizer.moveNext(); //parse op
+		if (tokenizer.current().token() != Token.MULT_OP || tokenizer.current().token() != Token.DIV_OP) {
+			throw new ParserException("Missing or incorrect operator for term .");
+		} else {
+			tNode.value = tokenizer.current().token();
+		}
+		tokenizer.moveNext();
+		tNode.right = constructTerm();
+		return tNode;
 
 	}
 
 	private INode constructFactor() {
-		constructExpression();
+		FactorNode fNode = new FactorNode();
+		Lexeme lex = tokenizer.current();
+		if (lex.token() == Token.INT_LIT || lex.token() == Token.IDENT) {
+			fNode.leaf = lex;
+		}
+		//TODO: handle Expression as Factor
 		return null;
 	}
 }
