@@ -11,7 +11,7 @@ public class StatementsNode implements INode {
             result = assignmentNode.evaluate(args);
             //call eval and store result
                 //recurse eval next statement
-            if(statementsNode != null && statementsNode.statementsNode!= null )
+            if(statementsNode != null && statementsNode.assignmentNode!= null )
             //make sure the statement a) exists, b) is not null!
             //else we will call eval on an empty StatementsNode
             {

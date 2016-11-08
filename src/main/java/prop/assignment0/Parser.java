@@ -57,7 +57,7 @@ public class Parser implements IParser {
         }
         sNode.assignmentNode = constructAssignment();
         //	tokenizer.moveNext();
-        sNode.statementsNode = constructStatement();
+        sNode.statementsNode = (StatementsNode) constructStatement();
         return sNode;
     }
 
