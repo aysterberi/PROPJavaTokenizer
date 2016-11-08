@@ -26,9 +26,7 @@ public class Tokenizer implements ITokenizer {
     @Override
     public void moveNext() throws IOException, TokenizerException {
         consumeWhitespace();
-        char c = scanner.current();
-        lookupTable(c);
-        scanner.moveNext();
+        lookupTable(scanner.current());
     }
 
     @Override
@@ -42,37 +40,47 @@ public class Tokenizer implements ITokenizer {
         }
     }
 
-    private void lookupTable(char ch) throws IOException {
+    private void lookupTable(char ch) throws IOException, TokenizerException {
         switch (ch) {
             case '{':
                 current = new Lexeme('{', Token.LEFT_CURLY);
+                scanner.moveNext();
                 break;
             case '}':
                 current = new Lexeme('}', Token.RIGHT_CURLY);
+                scanner.moveNext();
                 break;
             case '(':
                 current = new Lexeme('(', Token.LEFT_PAREN);
+                scanner.moveNext();
                 break;
             case ')':
                 current = new Lexeme(')', Token.RIGHT_PAREN);
+                scanner.moveNext();
                 break;
             case ';':
                 current = new Lexeme(';', Token.SEMICOLON);
+                scanner.moveNext();
                 break;
             case '+':
                 current = new Lexeme('+', Token.ADD_OP);
+                scanner.moveNext();
                 break;
             case '-':
                 current = new Lexeme('-', Token.SUB_OP);
+                scanner.moveNext();
                 break;
             case '*':
                 current = new Lexeme('*', Token.MULT_OP);
+                scanner.moveNext();
                 break;
             case '/':
                 current = new Lexeme('/', Token.DIV_OP);
+                scanner.moveNext();
                 break;
             case '=':
                 current = new Lexeme('=', Token.ASSIGN_OP);
+                scanner.moveNext();
                 break;
             default:
                 controlTokenEnum(ch);
@@ -80,11 +88,13 @@ public class Tokenizer implements ITokenizer {
         }
     }
 
-    private void controlTokenEnum(char ch) throws IOException {
+    private void controlTokenEnum(char ch) throws IOException, TokenizerException {
         if (Character.isDigit(ch))
             constructIntegerLiteral();
-        else
+        else if(Character.isLowerCase(ch))
             constructIdentifier();
+        else
+            throw new TokenizerException("Character not part of language");
     }
 
     private void constructIdentifier() throws IOException {
@@ -109,7 +119,7 @@ public class Tokenizer implements ITokenizer {
             chars[i] = ch;
             scanner.moveNext();
             ch = scanner.current();
-	        i++;
+            i++;
         }
         int val = Integer.parseInt(new String(chars).trim());
         this.current = new Lexeme(val, Token.INT_LIT);
