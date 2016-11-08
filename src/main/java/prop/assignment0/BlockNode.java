@@ -1,13 +1,21 @@
 package prop.assignment0;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BlockNode implements INode {
     public Lexeme left_curly;
     public Lexeme right_curly;
     public INode right;
+    private Map<String, Object> varMap;
 
     @Override
     public Object evaluate(Object[] args) throws Exception {
-        return null;
+        //create a map to store IDENT and their calculations
+        varMap = new HashMap<>();
+        Object result = right.evaluate(args);
+        //
+        return result;
     }
 
     @Override
