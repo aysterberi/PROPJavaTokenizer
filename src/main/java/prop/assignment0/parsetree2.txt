@@ -3,86 +3,95 @@ BlockNode
 LEFT_CURLY {
 	StatementsNode
 		AssignmentNode
-			IDENT a
-			ASSIGN_OP =
+IDENT a
+ASSIGN_OP =
 			ExpressionNode
 				TermNode
 					FactorNode
-						INT_LIT 1.0
-					MULT_OP *
+INT_LIT 1.0
+MULT_OP *
 					TermNode
 						FactorNode
-							INT_LIT 2.0
-				ADD_OP +
+INT_LIT 2.0
+null
+ADD_OP +
 				ExpressionNode
 					TermNode
 						FactorNode
-							LEFT_PAREN (
+LEFT_PAREN (
 							ExpressionNode
 								TermNode
 									FactorNode
-										INT_LIT 3.0
-								SUB_OP -
+INT_LIT 3.0
+null
+SUB_OP -
 								ExpressionNode
 									TermNode
 										FactorNode
-											INT_LIT 4.0
-							RIGHT_PAREN )
-						DIV_OP /
+INT_LIT 4.0
+null
+null
+RIGHT_PAREN )
+DIV_OP /
 						TermNode
 							FactorNode
-								INT_LIT 5.0
-			SEMICOLON ;
-		StatementsNode
+INT_LIT 5.0
+null
+null
+SEMICOLON ;		StatementsNode
 			AssignmentNode
-				IDENT b
-				ASSIGN_OP =
+IDENT b
+ASSIGN_OP =
 				ExpressionNode
 					TermNode
 						FactorNode
-							INT_LIT 4.0
-					SUB_OP -
+INT_LIT 4.0
+null
+SUB_OP -
 					ExpressionNode
 						TermNode
 							FactorNode
-								INT_LIT 3.0
-						SUB_OP -
+INT_LIT 3.0
+null
+SUB_OP -
 						ExpressionNode
 							TermNode
 								FactorNode
-									IDENT a
-							ADD_OP +
+IDENT a
+null
+ADD_OP +
 							ExpressionNode
 								TermNode
 									FactorNode
-										INT_LIT 6.0
-									DIV_OP /
+INT_LIT 6.0
+DIV_OP /
 									TermNode
 										FactorNode
-											INT_LIT 5.0
-										DIV_OP /
+INT_LIT 5.0
+DIV_OP /
 										TermNode
 											FactorNode
-												INT_LIT 2.0
-				SEMICOLON ;
-			StatementsNode
+INT_LIT 2.0
+null
+null
+SEMICOLON ;			StatementsNode
 				AssignmentNode
-					IDENT c
-					ASSIGN_OP =
+IDENT c
+ASSIGN_OP =
 					ExpressionNode
 						TermNode
 							FactorNode
-								IDENT b
-						ADD_OP +
+IDENT b
+null
+ADD_OP +
 						ExpressionNode
 							TermNode
 								FactorNode
-									IDENT a
-					SEMICOLON ;
-				StatementsNode
+IDENT a
+null
+null
+SEMICOLON ;				StatementsNode
 RIGHT_CURLY }
 
 EVALUATION:
-a = 1.8
-b = -0.2
-c = 1.6
+null
