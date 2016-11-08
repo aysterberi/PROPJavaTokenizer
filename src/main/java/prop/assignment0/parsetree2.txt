@@ -1,6 +1,6 @@
 PARSE TREE:
 BlockNode
-LEFT_CURLY {
+	LEFT_CURLY {
 	StatementsNode
 		AssignmentNode
 			IDENT a
@@ -80,7 +80,7 @@ LEFT_CURLY {
 									IDENT a
 					SEMICOLON ;
 				StatementsNode
-RIGHT_CURLY }
+	RIGHT_CURLY }
 
 EVALUATION:
 null
