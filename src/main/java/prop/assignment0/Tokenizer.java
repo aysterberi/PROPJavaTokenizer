@@ -121,7 +121,7 @@ public class Tokenizer implements ITokenizer {
             ch = scanner.current();
             i++;
         }
-        int val = Integer.parseInt(new String(chars).trim());
+        double val = Double.parseDouble(new String(chars).trim());
         this.current = new Lexeme(val, Token.INT_LIT);
     }
 }
