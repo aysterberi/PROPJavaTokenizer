@@ -12,10 +12,13 @@ public class BlockNode implements INode {
 
     @Override
     public void buildString(StringBuilder builder, int tabs) {
-        builder.append("BlockNode\n").append(left_curly.toString()).append("\n");
+        builder.append("BlockNode\n").
+                append(left_curly).
+                append("\n");
         tabs++;
         if (right != null)
             right.buildString(builder, tabs);
-        builder.append(right_curly.toString()).append("\n");
+        builder.append(right_curly).
+                append("\n");
     }
 }
