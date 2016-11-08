@@ -1,9 +1,9 @@
 package prop.assignment0;
 
 public class TermNode implements INode {
-    public INode left;
-    public INode right;
-	public Token value;
+    public INode factorNode;
+    public Lexeme operator;
+	public INode termNode;
 
 	@Override
     public Object evaluate(Object[] args) throws Exception {
