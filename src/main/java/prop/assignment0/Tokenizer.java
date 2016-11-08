@@ -93,6 +93,10 @@ public class Tokenizer implements ITokenizer {
             constructIntegerLiteral();
         else if(Character.isLowerCase(ch))
             constructIdentifier();
+        else if(ch == Scanner.EOF)
+            current = new Lexeme(Scanner.EOF, Token.EOF);
+        else if(ch == Scanner.NULL)
+            current = new Lexeme(Scanner.NULL, Token.EOF);
         else
             throw new TokenizerException("Character not part of language");
     }
