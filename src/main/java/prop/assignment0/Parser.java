@@ -32,6 +32,8 @@ public class Parser implements IParser {
 
     //all the methods for building statements
     private INode constructBlock() throws ParserException, IOException, TokenizerException {
+        if(tokenizer.current().token() == Token.EOF)
+            return bNode;
         bNode = new BlockNode();
         if (tokenizer.current().token() != Token.LEFT_CURLY) {
             //invalid start of a block
@@ -41,7 +43,8 @@ public class Parser implements IParser {
         tokenizer.moveNext(); //fetch next token
         bNode.right = constructStatement(); //point right
         tokenizer.moveNext(); //fetch next, which ought to be a right curly brace
-        if (tokenizer.current().token() != Token.RIGHT_CURLY) {
+        if (tokenizer.current().token() != Token.RIGHT_CURLY &&
+                tokenizer.current().token() != Token.EOF) {
             //invalid closing of a block
             throw new ParserException("Invalid block closure. Are you missing a '}' ?");
         }
@@ -88,7 +91,8 @@ public class Parser implements IParser {
         tokenizer.moveNext(); //we have to check if we have a ;
         if (tokenizer.current().token() == Token.SEMICOLON) {
             // TODO: left/right
-        } else if (tokenizer.current().token() != Token.SEMICOLON) {
+        } else if (tokenizer.current().token() != Token.SEMICOLON &&
+                tokenizer.current().token() != Token.EOF) {
 			throw new ParserException("Missing semicolon on assignment. Make sure you haven't missed a ;");
 		}
         return aNode;
