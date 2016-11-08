@@ -139,8 +139,8 @@ public class Parser implements IParser {
 				return fNode;
 		}
 		if (lex.token() != Token.IDENT &&
-				lex.token() != Token.INT_LIT
-				&& lex.token() != Token.LEFT_PAREN) {
+				lex.token() != Token.INT_LIT &&
+                lex.token() != Token.LEFT_PAREN) {
 			throw new ParserException("Invalid factor");
 		}
 		return fNode;
