@@ -13,13 +13,17 @@ public class BlockNode implements INode {
 	public Object evaluate(Object[] args) throws Exception {
 		//create a map to store IDENT and their calculations
 		varMap = new HashMap<>();
-		args[0] = varMap;
-		right.evaluate(args); //evaluate right
+		Object[] newArgs = new Object[10];
+		newArgs[0] = varMap;
+		right.evaluate(newArgs); //evaluate right
 		//
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Map.Entry<String, Object> var : varMap.entrySet()) {
 			String varKey = var.getKey();
-			String varValue = var.getValue().toString();
+			String varValue = "";
+			if (var.getValue() != null) {
+				varValue = var.getValue().toString();
+			}
 			stringBuilder.append(varKey).append("=").append(varValue);
 		}
 		return stringBuilder.toString();

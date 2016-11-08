@@ -13,15 +13,17 @@ public class TermNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		double first = Double.parseDouble((String) factorNode.evaluate(args));
+		double first = Double.parseDouble(factorNode.evaluate(args).toString());
 		if (operator != null) {
 			//ask for the right term eval
-			double second = Double.parseDouble((String) termNode.evaluate(args));
+			double second = Double.parseDouble(termNode.evaluate(args).toString());
 			switch (operator.token()) {
 				case MULT_OP:
 					return first * second;
 				case DIV_OP:
 					return first / second;
+				default:
+					assert false : operator.token();
 			}
 		}
 		return first;

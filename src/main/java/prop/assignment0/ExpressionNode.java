@@ -17,6 +17,8 @@ public class ExpressionNode implements INode {
 						return first + second;
 					case SUB_OP:
 						return first - second;
+					default:
+						assert false : operator.token();
 				}
 			}
 			return first;
