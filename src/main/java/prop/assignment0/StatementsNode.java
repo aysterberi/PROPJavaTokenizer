@@ -2,7 +2,7 @@ package prop.assignment0;
 
 public class StatementsNode implements INode {
     public INode assignmentNode;
-    public INode statementsNode;
+    public StatementsNode statementsNode;
     @Override
     public Object evaluate(Object[] args) throws Exception {
         Object result = null;
@@ -11,12 +11,14 @@ public class StatementsNode implements INode {
             result = assignmentNode.evaluate(args);
             //call eval and store result
                 //recurse eval next statement
-            if(statementsNode != null)
+            if(statementsNode != null && statementsNode.statementsNode!= null )
+            //make sure the statement a) exists, b) is not null!
+            //else we will call eval on an empty StatementsNode
             {
-
+              statementsNode.evaluate(args);
             }
         }
-        return null;
+        return result;
     }
 
     @Override
