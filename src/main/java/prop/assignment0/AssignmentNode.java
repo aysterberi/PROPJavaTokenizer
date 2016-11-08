@@ -12,16 +12,22 @@ public class AssignmentNode implements INode {
 
     @Override
     public void buildString(StringBuilder builder, int tabs) {
-        for(int i = 0; i < tabs; i++)
-            builder.append("\t");
+        applyTabs(builder, tabs);
         tabs++;
-        builder.append("AssignmentNode\n").
-                append(ident).
-                append("\n").
-                append(operator).
-                append("\n");
+        builder.append("AssignmentNode\n");
+        applyTabs(builder, tabs);
+        builder.append(ident).append("\n");
+        applyTabs(builder, tabs);
+        builder.append(operator).append("\n");
         if(expressionNode != null)
             expressionNode.buildString(builder, tabs);
-        builder.append(semicolon);
+        applyTabs(builder, tabs);
+        builder.append(semicolon).append("\n");
+    }
+
+    private void applyTabs(StringBuilder builder, int tabs) {
+        for (int i = 0; i < tabs; i++) {
+            builder.append("\t");
+        }
     }
 }

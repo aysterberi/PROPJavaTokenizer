@@ -10,13 +10,18 @@ public class StatementsNode implements INode {
 
     @Override
     public void buildString(StringBuilder builder, int tabs) {
-        for(int i = 0; i < tabs; i++)
-            builder.append("\t");
+        applyTabs(builder, tabs);
         tabs++;
         builder.append("StatementsNode\n");
         if(assignmentNode != null)
             assignmentNode.buildString(builder, tabs);
         if(statementsNode != null)
             statementsNode.buildString(builder, tabs);
+    }
+
+    private void applyTabs(StringBuilder builder, int tabs) {
+        for (int i = 0; i < tabs; i++) {
+            builder.append("\t");
+        }
     }
 }

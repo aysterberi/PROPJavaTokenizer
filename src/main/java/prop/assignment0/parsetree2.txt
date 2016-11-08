@@ -3,94 +3,83 @@ BlockNode
 LEFT_CURLY {
 	StatementsNode
 		AssignmentNode
-IDENT a
-ASSIGN_OP =
+			IDENT a
+			ASSIGN_OP =
 			ExpressionNode
 				TermNode
 					FactorNode
-INT_LIT 1.0
-MULT_OP *
+						INT_LIT 1.0
+					MULT_OP *
 					TermNode
 						FactorNode
-INT_LIT 2.0
-null
-ADD_OP +
+							INT_LIT 2.0
+				ADD_OP +
 				ExpressionNode
 					TermNode
 						FactorNode
-LEFT_PAREN (
+							LEFT_PAREN (
 							ExpressionNode
 								TermNode
 									FactorNode
-INT_LIT 3.0
-null
-SUB_OP -
+										INT_LIT 3.0
+								SUB_OP -
 								ExpressionNode
 									TermNode
 										FactorNode
-INT_LIT 4.0
-null
-null
-RIGHT_PAREN )
-DIV_OP /
+											INT_LIT 4.0
+							RIGHT_PAREN )
+						DIV_OP /
 						TermNode
 							FactorNode
-INT_LIT 5.0
-null
-null
-SEMICOLON ;		StatementsNode
+								INT_LIT 5.0
+			SEMICOLON ;
+		StatementsNode
 			AssignmentNode
-IDENT b
-ASSIGN_OP =
+				IDENT b
+				ASSIGN_OP =
 				ExpressionNode
 					TermNode
 						FactorNode
-INT_LIT 4.0
-null
-SUB_OP -
+							INT_LIT 4.0
+					SUB_OP -
 					ExpressionNode
 						TermNode
 							FactorNode
-INT_LIT 3.0
-null
-SUB_OP -
+								INT_LIT 3.0
+						SUB_OP -
 						ExpressionNode
 							TermNode
 								FactorNode
-IDENT a
-null
-ADD_OP +
+									IDENT a
+							ADD_OP +
 							ExpressionNode
 								TermNode
 									FactorNode
-INT_LIT 6.0
-DIV_OP /
+										INT_LIT 6.0
+									DIV_OP /
 									TermNode
 										FactorNode
-INT_LIT 5.0
-DIV_OP /
+											INT_LIT 5.0
+										DIV_OP /
 										TermNode
 											FactorNode
-INT_LIT 2.0
-null
-null
-SEMICOLON ;			StatementsNode
+												INT_LIT 2.0
+				SEMICOLON ;
+			StatementsNode
 				AssignmentNode
-IDENT c
-ASSIGN_OP =
+					IDENT c
+					ASSIGN_OP =
 					ExpressionNode
 						TermNode
 							FactorNode
-IDENT b
-null
-ADD_OP +
+								IDENT b
+						ADD_OP +
 						ExpressionNode
 							TermNode
 								FactorNode
-IDENT a
-null
-null
-SEMICOLON ;				StatementsNode
+									IDENT a
+					SEMICOLON ;
+				StatementsNode
 RIGHT_CURLY }
 
 EVALUATION:
