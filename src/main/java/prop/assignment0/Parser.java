@@ -25,7 +25,7 @@ public class Parser implements IParser {
 
     @Override
     public void close() throws IOException {
-
+        tokenizer.close();
     }
 
     //all the methods for building statements
