@@ -1,29 +1,27 @@
+/*
+ * Billy G. J. Beltran(bibe1744) & Joakim Berglund(jobe7147)
+ * Contact details: billy@caudimordax.org, joakimberglund@live.se
+ */
+
 package prop.assignment0;
 
 import java.util.Map;
 
 public class AssignmentNode implements INode {
-	public Lexeme ident;
-	public Lexeme operator;
-	public INode expressionNode;
-	public Lexeme semicolon;
+	Lexeme ident;
+	Lexeme operator;
+	INode expressionNode;
+	Lexeme semicolon;
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		//create var ident
 		String identifier = ident.value().toString();
-		//eval var ident
-		Object varEval = expressionNode.evaluate(args);
-		System.out.println(args[1]);
-		//extract symbol table from args
-		//store results of eval with ident
+		expressionNode.evaluate(args);
 		if (args[0] instanceof Map) {
 			Map<String, Object> varMap = (Map) args[0];
 			varMap.put(identifier, args[1]);
 		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(identifier).append("=").append(varEval);
-		return sb.toString();
+        return null;
 	}
 
     @Override

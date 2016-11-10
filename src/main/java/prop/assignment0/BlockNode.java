@@ -1,33 +1,41 @@
+/*
+ * Billy G. J. Beltran(bibe1744) & Joakim Berglund(jobe7147)
+ * Contact details: billy@caudimordax.org, joakimberglund@live.se
+ */
+
 package prop.assignment0;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BlockNode implements INode {
-	public Lexeme left_curly;
-	public Lexeme right_curly;
-	public INode right;
-	private Map<String, Object> varMap;
+    Lexeme left_curly;
+    Lexeme right_curly;
+    INode right;
 
-	@Override
-	public Object evaluate(Object[] args) throws Exception {
-		//create a map to store IDENT and their calculations
-		varMap = new HashMap<>();
-		Object[] newArgs = new Object[10];
-		newArgs[0] = varMap;
-		right.evaluate(newArgs); //evaluate right
-		//
-		StringBuilder stringBuilder = new StringBuilder();
-		for (Map.Entry<String, Object> var : varMap.entrySet()) {
-			String varKey = var.getKey();
-			String varValue = "";
-			if (var.getValue() != null) {
-				varValue = var.getValue().toString();
-			}
-			stringBuilder.append(varKey).append("=").append(varValue);
-		}
-		return stringBuilder.toString();
-	}
+    @Override
+    public Object evaluate(Object[] args) throws Exception {
+        Map<String, Object> varMap = new HashMap<>();
+        Object[] newArgs = new Object[10];
+        newArgs[0] = varMap;
+        right.evaluate(newArgs);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, Object> var : varMap.entrySet()) {
+            String varKey = var.getKey();
+            DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+            String varValue = "";
+            if (var.getValue() != null) {
+                varValue = decimalFormat.format(var.getValue());
+            }
+            stringBuilder.append(varKey).
+                    append(" = ").
+                    append(varValue).
+                    append("\n");
+        }
+        return stringBuilder.toString();
+    }
 
     @Override
     public void buildString(StringBuilder builder, int tabs) {
