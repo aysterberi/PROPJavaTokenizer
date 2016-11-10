@@ -8,9 +8,10 @@ public class ExpressionNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		double result = (double) args[1];
+		Object t = args[1];
 		Token op = (Token) args[2];
-		if (result != 0 && op != null) {
+		if (t != null && op != null) {
+			double result = (double) t;
 			args[1] = null;
 			args[2] = null;
 			termNode.evaluate(args);
@@ -24,12 +25,10 @@ public class ExpressionNode implements INode {
 				default:
 					assert false : operator.token();
 			}
-		}
-		else {
+		} else {
 			termNode.evaluate(args);
 		}
-		if (operator != null)
-		{
+		if (operator != null) {
 			args[2] = operator.token();
 			expressionNode.evaluate(args);
 		}

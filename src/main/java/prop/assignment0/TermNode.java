@@ -13,24 +13,25 @@ public class TermNode implements INode {
 
 	@Override
 	public Object evaluate(Object[] args) throws Exception {
-		double result = (double) args[1];
-		double multiplicand = (double) factorNode.evaluate(args);
+		Object t = args[1];
+		double otherBit = (double) factorNode.evaluate(args);
 		Token op = (Token) args[2];
-		if (result != 0 && op != null) {
+		if (t != null && op != null) {
+			double result = (double) t;
 			args[1] = null;
 			args[2] = null;
 			switch (op) {
 				case MULT_OP:
-					args[1] = mult(result, (double) args[1]);
+					args[1] = mult(result, otherBit);
 					break;
 				case DIV_OP:
-					args[1] = div(result, (double) args[1]);
+					args[1] = div(result, otherBit);
 					break;
 				default:
 					assert false : operator.token();
 			}
 		} else {
-			args[1] = multiplicand;
+			args[1] = otherBit;
 		}
 		if (operator != null) {
 			args[2] = operator.token();

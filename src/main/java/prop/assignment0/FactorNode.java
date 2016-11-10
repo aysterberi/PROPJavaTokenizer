@@ -35,40 +35,46 @@ public class FactorNode implements INode {
 					break;
 				case IDENT:
 					String s = (String) ident.value();
-					double d = (Double) varMap.get(s);
+					Object o  = varMap.get(s);
+					double d = 0;
+					if (o != null) {
+						d = (Double) varMap.get(s);
+					}
 					result = d;
 					break;
 			}
 		} else if (expressionNode != null) {
 			//recurse expr eval
-			result = expressionNode.evaluate(args);
+			Object[] arr = {args[0], null, null};
+			expressionNode.evaluate(arr);
+			return arr[1];
 		}
 		return result;
 	}
 
-    @Override
-    public void buildString(StringBuilder builder, int tabs) {
-        applyTabs(builder, tabs);
-        tabs++;
-        builder.append("FactorNode\n");
-        if (expressionNode != null) {
-            applyTabs(builder, tabs);
-            builder.append(leftParen).
-                    append("\n");
-            expressionNode.buildString(builder, tabs);
-            applyTabs(builder, tabs);
-            builder.append(rightParen).
-                    append("\n");
-        } else {
-            applyTabs(builder, tabs);
-            builder.append(ident).
-                    append("\n");
-        }
-    }
+	@Override
+	public void buildString(StringBuilder builder, int tabs) {
+		applyTabs(builder, tabs);
+		tabs++;
+		builder.append("FactorNode\n");
+		if (expressionNode != null) {
+			applyTabs(builder, tabs);
+			builder.append(leftParen).
+					append("\n");
+			expressionNode.buildString(builder, tabs);
+			applyTabs(builder, tabs);
+			builder.append(rightParen).
+					append("\n");
+		} else {
+			applyTabs(builder, tabs);
+			builder.append(ident).
+					append("\n");
+		}
+	}
 
-    private void applyTabs(StringBuilder builder, int tabs) {
-        for (int i = 0; i < tabs; i++) {
-            builder.append("\t");
-        }
-    }
+	private void applyTabs(StringBuilder builder, int tabs) {
+		for (int i = 0; i < tabs; i++) {
+			builder.append("\t");
+		}
+	}
 }

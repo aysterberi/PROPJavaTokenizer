@@ -14,11 +14,12 @@ public class AssignmentNode implements INode {
 		String identifier = ident.value().toString();
 		//eval var ident
 		Object varEval = expressionNode.evaluate(args);
+		System.out.println(args[1]);
 		//extract symbol table from args
 		//store results of eval with ident
 		if (args[0] instanceof Map) {
 			Map<String, Object> varMap = (Map) args[0];
-			varMap.put(identifier, varEval);
+			varMap.put(identifier, args[1]);
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(identifier).append("=").append(varEval);
